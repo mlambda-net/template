@@ -1,0 +1,18 @@
+
+app:
+  name:     template_api
+  port:     9090
+  base:     dummy
+
+metric:
+  port:       9091
+  namespace:  dummy
+
+docs:
+  host:   localhost
+  path:   template
+  port:   9092
+
+remote:
+  port:   9000
+  server: template_server

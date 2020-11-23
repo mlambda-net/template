@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "server.fullname" . }}
+  labels:
+    {{- include "server.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "server.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "server.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: gprc
+              containerPort: {{.Values.service.port}}
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 5
+            exec:
+              command: ["/grpc_health_probe", "-addr=:{{.Values.service.port}}"]
+
+          readinessProbe:
+            initialDelaySeconds: 10
+            exec:
+              command: ["/grpc_health_probe", "-addr=:{{.Values.service.port}}"]
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: VERSION
+              value: {{.Values.image.tag}}
+            - name: ENV
+              value: {{ .Values.env }}
+            - name: SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: DB_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: DB_HOST
+            - name: DB_DATA
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: DB_DATA
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "server.fullname" . }}
+                  key: DB_PORT
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

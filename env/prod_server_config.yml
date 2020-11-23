@@ -1,0 +1,13 @@
+app:
+  name:     template_server
+  port:     9000
+  version:  1.0.0
+
+metric:
+  port: 9001
+  namespace: dummy
+
+email:
+  server: exchange
+  port: 80
+

@@ -1,0 +1,66 @@
+definitions:
+  model.Dummy:
+    properties:
+      value:
+        type: string
+    type: object
+  model.Select:
+    properties:
+      query:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /graphql:
+    post:
+      parameters:
+      - description: query
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Select'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+        "401":
+          description: Unauthorized
+          schema:
+            type: string
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Query the user
+  /ping/{id}:
+    get:
+      parameters:
+      - description: search by id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Dummy'
+        "500":
+          description: Internal error
+          schema:
+            type: string
+      summary: Get the ping
+securityDefinitions:
+  ApiKeyAuth:
+    authorizationUrl: ""
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
