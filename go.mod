@@ -13,7 +13,7 @@ require (
 	github.com/graphql-go/graphql v0.7.9
 	github.com/jinzhu/configor v1.2.1
 	github.com/mlambda-net/monads v1.0.3
-	github.com/mlambda-net/net v1.0.24
+	github.com/mlambda-net/net v1.0.25
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/files v0.0.0-20190704085106-630677cd5c14

@@ -2,6 +2,7 @@ package api
 
 import (
   "context"
+  "errors"
   "fmt"
   "github.com/etherlabsio/healthcheck"
   "github.com/mlambda-net/net/pkg/metrics"
@@ -83,7 +84,13 @@ func (s *setup) Start() {
   local.Checks(
     healthcheck.WithTimeout(5 * time.Second),
     healthcheck.WithChecker("server",healthcheck.CheckerFunc(func(ctx context.Context) error {
-     // client.Health()
+      status, err := client.Health()
+      if err != nil {
+        return err
+      }
+      if !status.Success {
+        return errors.New(status.Message)
+      }
       return nil
     })),
   )
