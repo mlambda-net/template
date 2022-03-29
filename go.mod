@@ -8,7 +8,7 @@ require (
 	github.com/etherlabsio/healthcheck v0.0.0-20191224061800-dd3d2fd8c3f6
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-pg/pg/v10 v10.6.2
-	github.com/gogo/protobuf v1.3.1
+	github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/mux v1.8.0
 	github.com/graphql-go/graphql v0.7.9
 	github.com/jinzhu/configor v1.2.1
