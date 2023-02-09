@@ -6,7 +6,7 @@ require (
 	github.com/AsynkronIT/protoactor-go v0.0.0-20201117200131-5ae73aa8b6fe
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/etherlabsio/healthcheck v0.0.0-20191224061800-dd3d2fd8c3f6
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-pg/pg/v10 v10.6.2
 	github.com/gogo/protobuf v1.3.1
 	github.com/gorilla/mux v1.8.0
